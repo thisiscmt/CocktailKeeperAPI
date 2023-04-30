@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import * as DataService from '../services/dataService.js';
+// import * as DataService from '../services/dataService.js';
 
 const authChecker = async (request: Request, response: Response, next: NextFunction) => {
     // try {

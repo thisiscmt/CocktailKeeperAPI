@@ -1,7 +1,5 @@
 import debug from 'debug';
 import http from 'http';
-import express from 'express';
-import path from 'path';
 import app from './app.js';
 
 debug('cocktail-keeper');

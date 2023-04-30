@@ -5,13 +5,6 @@ import helmet from "helmet";
 import baseRouter from './routes/baseRouter.js';
 import cocktailRouter from './routes/cocktailRouter.js';
 import authRouter from './routes/authRouter.js';
-import * as SharedService from './services/sharedService.js'
-
-// declare module "express-session" {
-//     interface SessionData {
-//         email: string;
-//     }
-// }
 
 const app = express();
 
@@ -21,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({
     origin: function(origin, callback){
         if (process.env.NODE_ENV === 'production') {
-            return callback(null, process.env.DIHT_ALLOWED_ORIGIN)
+            return callback(null, process.env.CK_ALLOWED_ORIGIN)
         } else {
             return callback(null, true);
         }
