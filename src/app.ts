@@ -4,7 +4,6 @@ import helmet from "helmet";
 
 import baseRouter from './routes/baseRouter.js';
 import cocktailRouter from './routes/cocktailRouter.js';
-import authRouter from './routes/authRouter.js';
 
 const app = express();
 
@@ -34,6 +33,5 @@ if (process.env.NODE_ENV === 'production') {
 
 app.use('/', baseRouter);
 app.use('/cocktail', cocktailRouter);
-app.use('/auth', authRouter);
 
 export default app;
