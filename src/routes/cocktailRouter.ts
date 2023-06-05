@@ -1,49 +1,25 @@
 import express, {Request, Response} from 'express';
-import fs from 'fs';
-import path from 'path';
 
-import { User } from '../models/models.js';
 import * as AuthService from '../services/authService.js';
-import * as Constants from '../constants/constants.js';
+import * as DataService from '../services/dataService.js';
 
 const cocktailRouter = express.Router();
-
-const getServerBackup = (user: User) => {
-    const filePath = path.join(process.cwd(), 'app_data', user.id, Constants.COCKTAIL_DATA_FILE);
-
-    if (fs.statSync(filePath, { throwIfNoEntry: false })) {
-        return fs.readFileSync(filePath, { encoding: 'utf8' });
-    } else {
-        return '';
-    }
-};
-
-const createServerBackup = (user: User, cocktailDataJSON: string) => {
-    const filePath = path.join(process.cwd(), 'app_data', user.id, Constants.COCKTAIL_DATA_FILE);
-
-    try {
-        fs.statSync(filePath);
-    } catch (error) {
-        fs.mkdirSync(path.dirname(filePath));
-    }
-
-    fs.writeFileSync(filePath, cocktailDataJSON, { encoding: 'utf8'});
-};
 
 cocktailRouter.get('/backup', async (request: Request, response: Response) => {
     try {
         const user = AuthService.verifyUser(request.headers.authorization || '');
 
         if (user) {
-            const backupType = request.body.backupType || '';
+            const backupType = request.query.backupType || '';
             let cocktailDataJSON = '';
+
             switch (backupType) {
-                case 'Server':
-                    cocktailDataJSON = getServerBackup(user);
+                case 'server':
+                    cocktailDataJSON = DataService.getServerBackup(user);
                     break;
                 default:
                     response.status(500).send('Unsupported backup type specified');
-                    break;
+                    return;
             }
 
             response.status(200).send(cocktailDataJSON);
@@ -63,7 +39,7 @@ cocktailRouter.post('/backup', (request: Request, response: Response) => {
         const user = AuthService.verifyUser(request.headers.authorization || '');
 
         if (user) {
-            createServerBackup(user, request.body);
+            DataService.createServerBackup(user, request.body.data);
             response.status(200).send();
         } else {
             response.status(500).send('Authentication failed');

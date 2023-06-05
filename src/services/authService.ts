@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { User } from '../models/models';
+import { User } from '../models/models.js';
 
 export const getUser = (userName: string) => {
     const filePath = path.join(process.cwd(), 'app_data', 'users.dat');
