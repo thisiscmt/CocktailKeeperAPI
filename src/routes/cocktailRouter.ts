@@ -10,15 +10,15 @@ cocktailRouter.get('/backup', async (request: Request, response: Response) => {
         const user = AuthService.verifyUser(request.headers.authorization || '');
 
         if (user) {
-            const backupType = request.query.backupType || '';
+            const provider = request.query.provider || '';
             let cocktailDataJSON = '';
 
-            switch (backupType) {
+            switch (provider) {
                 case 'server':
                     cocktailDataJSON = DataService.getServerBackup(user);
                     break;
                 default:
-                    response.status(500).send('Unsupported backup type specified');
+                    response.status(500).send('Unsupported provider specified');
                     return;
             }
 

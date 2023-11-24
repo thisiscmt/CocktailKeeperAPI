@@ -4,6 +4,7 @@ import fs from 'fs';
 import { User } from '../models/models.js';
 import { COCKTAIL_DATA_FILE } from '../constants/constants.js';
 
+// TODO: Switch these to use async versions of the fs functions
 export const getServerBackup = (user: User) => {
     const dataFilePath = path.join(process.cwd(), 'app_data', user.id, COCKTAIL_DATA_FILE);
 
