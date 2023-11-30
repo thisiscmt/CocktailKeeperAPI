@@ -15,7 +15,7 @@ cocktailRouter.get('/backup', async (request: Request, response: Response) => {
 
             switch (provider) {
                 case 'server':
-                    cocktailDataJSON = DataService.getServerBackup(user);
+                    cocktailDataJSON = await DataService.getServerBackup(user);
                     break;
                 default:
                     response.status(500).send('Unsupported provider specified');
@@ -34,12 +34,12 @@ cocktailRouter.get('/backup', async (request: Request, response: Response) => {
     }
 });
 
-cocktailRouter.post('/backup', (request: Request, response: Response) => {
+cocktailRouter.post('/backup', async (request: Request, response: Response) => {
     try {
         const user = AuthService.verifyUser(request.headers.authorization || '');
 
         if (user) {
-            DataService.createServerBackup(user, request.body.data);
+            await DataService.createServerBackup(user, request.body.data);
             response.status(200).send();
         } else {
             response.status(500).send('Authentication failed');
