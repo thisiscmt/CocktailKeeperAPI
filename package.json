@@ -1,6 +1,6 @@
 {
     "name": "cocktail-keeper-api",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "description": "APIs for the Cocktail Keeper web app",
     "author": "Chris Tybur",
     "private": true,
