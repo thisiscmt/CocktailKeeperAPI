@@ -11,7 +11,7 @@ app.disable('x-powered-by');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: function(origin, callback){
+    origin: function(_origin, callback){
         if (process.env.NODE_ENV === 'production') {
             return callback(null, process.env.CK_ALLOWED_ORIGIN)
         } else {
