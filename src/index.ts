@@ -2,6 +2,8 @@ import http from 'http';
 
 import app from './app.js';
 
+const port = process.env.PORT || 3060;
+
 function onError(error: NodeJS.ErrnoException) {
     if (error.syscall !== 'listen') {
         throw error;
@@ -11,25 +13,37 @@ function onError(error: NodeJS.ErrnoException) {
         ? 'Pipe ' + port
         : 'Port ' + port;
 
+    let exitProcess = false;
+
     switch (error.code) {
         case 'EACCES':
             console.error(bind + ' requires elevated privileges');
-            process.exit(1);
+            exitProcess = true;
+
             break;
         case 'EADDRINUSE':
             console.error(bind + ' is already in use');
-            process.exit(1);
+            exitProcess = true;
+
             break;
         default:
             throw error;
     }
+
+    if (exitProcess) {
+        process.exit(1);
+    }
 }
 
-const port = process.env.PORT || 3060;
-app.set('port', port);
+try {
+    app.set('port', port);
 
-const server = http.createServer(app);
-server.listen(port);
-server.on('error', onError);
+    const server = http.createServer(app);
+    server.listen(port);
+    server.on('error', onError);
 
-console.log(`Cocktail Keeper API has started on port ${port}`);
+    console.log(`Cocktail Keeper API has started on port ${port}`);
+} catch(error) {
+    console.log('Error starting the API: %o', error);
+    process.exit(1);
+}
